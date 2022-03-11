@@ -3,7 +3,7 @@ const path = require('path');
 const NoteData = require("./db/db.json")
 const PORT = 3001;
 const uuid = require('./helpers/uuid');
-const fs = require("fs")
+const fs = require("fs");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -20,7 +20,7 @@ app.get('/api/notes', (req, res) =>{
 app.get('/notes', (req, res) =>{
     res.sendFile(path.join(__dirname, 'public/notes.html'));
 });
-app.post('/api/notes', (req, res) => {//:params. 
+/*app.post('/api/notes', (req, res) => {//:params. 
     // Log our request to the terminal
     if (req.body) {
         console.info(`${req.method} request received to save a note`);
@@ -39,7 +39,7 @@ app.post('/api/notes', (req, res) => {//:params.
                     var Result = JSON.parse(data)
                     Result.push(IncomingInfo)
                     fs.writeFile(`./db/db.json`, JSON.stringify(Result), (err) =>
-                        err ? console.error(err) : console.log(`note saved to JSON db`)
+                        err ? console.error(err) : console.log("SUCCESS")
                     );
                 }
             })
@@ -47,8 +47,22 @@ app.post('/api/notes', (req, res) => {//:params.
             res.json("ERROR. NO TITLE OR TEXT GIVEN")
         }     
     }
+});*/
+app.post('/api/notes', (req, res) => { 
+    req.body.id = uuid();
+    NoteData.push(req.body);
+    res.json(NoteData);
 });
 
+app.delete('/api/notes/:id', (req, res) => {
+    // Log our request to the terminal
+    if (req.body && req.body.id) {
+    console.info(`${req.method} request received to delete a note`);
+    // Log the request body
+    console.info(req.body);
+    res.json("SUCCESS")
+    }
+  });
 
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT}`);
