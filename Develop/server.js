@@ -10,7 +10,6 @@ app.use(express.json());
 
 app.use(express.static('public'));
 app.get('/', (req, res) => {
-    console.log(path.join(__dirname,"index.html"))
     res.sendFile(path.join(__dirname, 'index.html'));
   });
 
@@ -55,12 +54,26 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-    // Log our request to the terminal
     if (req.body && req.body.id) {
     console.info(`${req.method} request received to delete a note`);
-    // Log the request body
     console.info(req.body);
-    res.json("SUCCESS")
+    var flag = false
+    console.log(NoteData)
+    for (var x=0;x<NoteData.length;x++){
+        if (NoteData[x].id==req.body.id){
+            NoteData.splice(x,1)
+            flag=true
+        }
+    }
+    console.log(NoteData)
+    if (flag){
+        console.log("SUCCESSFULLY DELETE NOTE!")
+        res.json("SUCCESS")
+    }else{
+        res.json("ERROR. COULDNT FIND NOTE WITH CORRECT ID")
+    }
+    }else{
+        res.json("ERROR. MISSING PARAMETERS")
     }
   });
 
