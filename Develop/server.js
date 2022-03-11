@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const NoteData = require("./db/db.json")
 const PORT = 3001;
-
+const uuid = require('./helpers/uuid');
+const fs = require("fs")
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -19,21 +20,33 @@ app.get('/api/notes', (req, res) =>{
 app.get('/notes', (req, res) =>{
     res.sendFile(path.join(__dirname, 'public/notes.html'));
 });
-const postReview = (review) =>
-  fetch('/api/notes', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(review),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log('Successful POST request:', data);
-      return data;
-    })
-    .catch((error) => {
-      console.error('Error in POST request:', error);
+app.post('/api/notes', (req, res) => {//:params. 
+    // Log our request to the terminal
+    if (req.body) {
+        console.info(`${req.method} request received to save a note`);
+        // Log the request body
+        console.info(req.body);
+        const {title, text}=req.body
+        if (title || text){
+            const IncomingInfo={title,text}
+            IncomingInfo.id=uuid()
+            console.log(IncomingInfo)
+            res.json("NOTE SAVED!")
+            fs.readFile(`./db/db.json`,(err,data)=>{
+                if (err){
+                    console.log(err)
+                }else{
+                    var Result = JSON.parse(data)
+                    Result.push(IncomingInfo)
+                    fs.writeFile(`./db/db.json`, JSON.stringify(Result), (err) =>
+                        err ? console.error(err) : console.log(`note saved to JSON db`)
+                    );
+                }
+            })
+        }else{
+            res.json("ERROR. NO TITLE OR TEXT GIVEN")
+        }     
+    }
 });
 
 
