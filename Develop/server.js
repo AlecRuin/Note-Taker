@@ -54,13 +54,13 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-    if (req.body && req.body.id) {
+    if (req.body && req.params.id) {
     console.info(`${req.method} request received to delete a note`);
-    console.info(req.body);
+    console.info(req.params);
     var flag = false
     console.log(NoteData)
     for (var x=0;x<NoteData.length;x++){
-        if (NoteData[x].id==req.body.id){
+        if (NoteData[x].id==req.params.id){
             NoteData.splice(x,1)
             flag=true
         }
