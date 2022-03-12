@@ -2,23 +2,10 @@
 
 ## Description
 
-This program allows users to generate an HTML automatically after answering questions about their team members. The HTML is formatted with Bootstrap and is located with Distribution
-
-## Installation
-
-1. Download the file and unzip into folder. 
-2. Open your preferred terminal and run npm i to install the dependancies
-    + Ensure inquirer have been properly installed by running npm i y and npm i inquirer respectively
+This program allows users to generate an a note within HTML and save it within their session. It also allows the user to delete the note, should they not need it
 
 ## Usage
 
-1. Within your favorite terminal, navigate to project installation
-2. run node index
-3. Answer the managerial questions
-    + Add as many employees as you would like in the menu
-4. Select finish
-5. Generated HTML is located in /Distribution/EmployeeChart.html
-
-## Example Video
-
-[Video](https://youtu.be/13Na9IQlWBs)
+1. Upon visiting the site, click the plus button to create a new note
+2. Upon typing a valid note title and note body, it will offer the save button
+3. finally, click the save button will save the results and immediately display the note on the left side by title only
